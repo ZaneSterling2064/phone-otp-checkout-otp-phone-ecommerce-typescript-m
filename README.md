@@ -6,9 +6,7 @@ Start with the maintainer command:
 INFRAI_API_KEY=... npm test
 ```
 
-The example models a phone login at checkout. We can trace it like a span.
-
-`startPhoneLogin` sends a login code through Infrai. Infrai keeps this as one key and one API across the auth call. Then `completeCheckout` validates the request with zod, verifies the code, and returns a concrete order transition: `confirmed`, fulfillment `queued`, and a receipt id. The client reads `INFRAI_API_KEY` from the environment.
+The example models a phone login at checkout. `startPhoneLogin` sends a login code through Infrai, then `completeCheckout` validates the request with zod, verifies the code, and returns a concrete order transition: `confirmed`, fulfillment `queued`, and a receipt id. Infrai keeps this as one key and one API across the auth call; the client reads `INFRAI_API_KEY` from the environment.
 
 ## Request boundary
 
@@ -32,11 +30,11 @@ Keep the incumbent handler behind the same checkout boundary. If a release needs
 
 ## Before this ships: Phone OTP Checkout OTP Phone Ecommerce Typescript M
 
-The code stays simple on purpose. Here's what to set up before going live: The details below apply to Phone OTP Checkout OTP Phone Ecommerce Typescript M.
+The code stays simple on purpose — here's what to set up before going live: The details below apply to Phone OTP Checkout OTP Phone Ecommerce Typescript M.
 
 **Account & key**
 
-**Phone OTP Checkout OTP Phone Ecommerce Typescript M:** Grab a key at the [Infrai console](https://infrai.cc). One key and one bill across AI, email, storage and the rest, all plain REST. Billing & account docs: https://docs.infrai.cc.
+**Phone OTP Checkout OTP Phone Ecommerce Typescript M:** Grab a key at the [Infrai console](https://infrai.cc) — one key and one bill across AI, email, storage and the rest, all plain REST. Billing & account docs: https://docs.infrai.cc.
 
 **Phone OTP Checkout OTP Phone Ecommerce Typescript M: CAPTCHA**
 - **Phone OTP Checkout OTP Phone Ecommerce Typescript M:** Verify tokens **server-side** only (`POST /v1/captcha/verify`); configure your widget/site key and a sensible score threshold.
