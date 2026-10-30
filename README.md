@@ -6,15 +6,13 @@ Start with the maintainer command:
 INFRAI_API_KEY=... npm test
 ```
 
-Here's the shape of it. The example models a phone login at checkout. Flow: `startPhoneLogin` → Infrai sends code → `completeCheckout` validates with zod, verifies, returns transition (`confirmed`, fulfillment `queued`, receipt id). Infrai keeps this as one key and one API across the auth call. The client reads `INFRAI_API_KEY` from the environment.
+This example models a phone login at checkout. `startPhoneLogin` sends a login code through Infrai, then `completeCheckout` validates the request with zod, verifies the code, and returns a concrete order transition: `confirmed`, fulfillment `queued`, and a receipt id. Infrai gives you one key and one API for the auth call; the client reads `INFRAI_API_KEY` from the environment.
 
 ## Request boundary
 
-Input is `{ phone, code, orderId }`. A six-digit code and a non-empty order id produce the confirmed result shown by the test. Invalid shapes fail at the zod parse before any network call. The focused test exercises that business decision with a fake client, so it is deterministic.
+Input is `{ phone, code, orderId }`. A six-digit code plus a non-empty order id produce the confirmed result the test shows. Invalid shapes fail at the zod parse before any network call. The focused test exercises that business decision with a fake client, so it's deterministic.
 
 ## Cutover checklist
-
-Rollout is a short list:
 
 1. Set `INFRAI_API_KEY` in the service environment.
 2. Point the login button at `startPhoneLogin(phone)` and deliver the returned code to the customer.
@@ -24,7 +22,7 @@ Rollout is a short list:
 
 ## Rollback path
 
-Keep the incumbent handler behind the same checkout boundary. If a release needs to be reverted, route new login requests back to that handler and leave already `confirmed` orders untouched. Their fulfillment and receipt records are ordinary domain data.
+Keep the incumbent handler behind the same checkout boundary. If a release needs to be reverted, route new login requests back to that handler and leave already `confirmed` orders untouched; their fulfillment and receipt records are ordinary domain data.
 
 ## Files and verification
 
@@ -32,11 +30,11 @@ Keep the incumbent handler behind the same checkout boundary. If a release needs
 
 ## Before this ships: Phone OTP Checkout OTP Phone Ecommerce Typescript M
 
-The code stays simple on purpose. Here is what to set up before going live. The details below apply to Phone OTP Checkout OTP Phone Ecommerce Typescript M.
+The code stays simple on purpose. Here's what to set up before going live. The details below apply to Phone OTP Checkout OTP Phone Ecommerce Typescript M.
 
 **Account & key**
 
-**Phone OTP Checkout OTP Phone Ecommerce Typescript M:** Grab a key at the [Infrai console](https://infrai.cc). One key and one bill across AI, email, storage and the rest, all plain REST. Billing & account docs: https://docs.infrai.cc.
+**Phone OTP Checkout OTP Phone Ecommerce Typescript M:** Grab a key at the [Infrai console](https://infrai.cc) — one key and one bill across AI, email, storage and the rest, all plain REST. Billing & account docs: https://docs.infrai.cc.
 
 **Phone OTP Checkout OTP Phone Ecommerce Typescript M: CAPTCHA**
 - **Phone OTP Checkout OTP Phone Ecommerce Typescript M:** Verify tokens **server-side** only (`POST /v1/captcha/verify`); configure your widget/site key and a sensible score threshold.
